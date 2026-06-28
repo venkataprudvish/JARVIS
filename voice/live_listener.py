@@ -1,35 +1,41 @@
 import sounddevice as sd
-import numpy as np
+import queue
 
 SAMPLE_RATE = 16000
 CHANNELS = 1
-BLOCK_SIZE = 4000
+BLOCK_SIZE = 1024
 
 
 class LiveListener:
 
     def __init__(self):
 
-        self.sample_rate = SAMPLE_RATE
+        self.queue = queue.Queue()
 
         print("Live Listener Ready")
+
+    def callback(self, indata, frames, time, status):
+
+        if status:
+            print(status)
+
+        self.queue.put(indata.copy())
 
     def listen(self):
 
         print("Listening continuously...")
 
-        while True:
+        with sd.InputStream(
+            samplerate=SAMPLE_RATE,
+            channels=CHANNELS,
+            blocksize=BLOCK_SIZE,
+            dtype="float32",
+            callback=self.callback
+        ):
 
-            audio = sd.rec(
-                BLOCK_SIZE,
-                samplerate=self.sample_rate,
-                channels=CHANNELS,
-                dtype="float32"
-            )
+            while True:
 
-            sd.wait()
-
-            yield audio
+                yield self.queue.get()
 
 
 listener = LiveListener()
