@@ -1,0 +1,51 @@
+{
+    "name": "pruthvish",
+    "branch": "AIML",
+    "university": "Jain University",
+    "my favourite language": "python",
+    "my mother name": "Lakshmi",
+    "my father name": "Nagendra",
+    "project": "smart Park",
+    "project_features": [
+        "dynamic pricing",
+        "crowd prediction"
+    ],
+    "project_tasks": [
+        "create crowd prediction module",
+        "build visitor analytics dashboard"
+    ],
+    "projects": {
+        "smart park": {
+            "features": [
+                "dynamic pricing"
+            ],
+            "notes": [],
+            "tasks": [
+                "crowd prediction module",
+                "Define requirements and scope for crowd prediction model",
+                "Design architecture with real-time data processing and machine learning integration",
+                "Collect sensor, camera, and user data for training models",
+                "Develop crowd prediction algorithm using historical and real-time data",
+                "Integrate module with dynamic pricing system and test compatibility",
+                "Deploy and monitor model for accuracy and performance optimization",
+                "build aiq prediction model"
+            ],
+            "timeline": [
+                {
+                    "time": "23-06-2026 17:54:59",
+                    "activity": "Added task: build aiq prediction model"
+                }
+            ]
+        },
+        "jarvis": {
+            "features": [
+                "wake word"
+            ],
+            "notes": [],
+            "tasks": [
+                "build voice engine"
+            ]
+        }
+    },
+    "current_project": "smart park"
+}

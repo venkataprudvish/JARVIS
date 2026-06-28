@@ -1,0 +1,8 @@
+from brain.ollama_brain import ask_jarvis
+
+print("Testing Ollama...")
+
+reply = ask_jarvis("Hello")
+
+print("Reply:")
+print(reply)
