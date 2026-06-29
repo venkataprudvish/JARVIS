@@ -2,6 +2,7 @@ import numpy as np
 from voice.vad_engine import vad
 from voice.vad_buffer import VADBuffer
 from voice.live_listener import listener
+
 from voice.audio_buffer import AudioBuffer
 from voice.offline_listener import transcribe_audio
 from brain.ollama_brain import ask_jarvis
@@ -86,7 +87,7 @@ class ConversationLoop:
                 if speaking:
 
                     self.silence_counter = 0
-                    self.conversation_mode = False
+
 
                 else:
 
@@ -135,19 +136,21 @@ class ConversationLoop:
 
                             text_lower = text.lower()
 
-                            if not any(word in text_lower for word in WAKE_WORDS):
+                            if not any(text_lower.startswith(word) for word in WAKE_WORDS):
                                 print("Ignored (No Wake Word)")
                                 continue
 
                             for word in WAKE_WORDS:
-                                text = text.replace(word, "", 1)
-                                text = text.replace(word.title(), "", 1)
+                                if text.lower().startswith(word):
+                                    text = text[len(word):]
+                                    break
 
-                            text = text.strip(",.!?")
+                            text = text.strip(" ,.!?")
 
                             if not text:
                                 speech_manager.speak("Yes Sir.")
                                 continue
+                            print("COMMAND:", text)
 
                             response = ask_jarvis(text)
 
