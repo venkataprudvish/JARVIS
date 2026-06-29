@@ -1,20 +1,41 @@
+from collections import deque
 import numpy as np
+import soundfile as sf
+
+from voice.config import SAMPLE_RATE, PRE_ROLL_SECONDS, BLOCK_SIZE
 
 
 class AudioBuffer:
 
     def __init__(self):
-        self.buffer = []
 
-    def add(self, chunk):
-        self.buffer.append(chunk)
+        max_chunks = int((SAMPLE_RATE * PRE_ROLL_SECONDS) / BLOCK_SIZE)
 
-    def clear(self):
-        self.buffer.clear()
+        self.pre_roll = deque(maxlen=max_chunks)
 
-    def get_audio(self):
+        self.recording = []
 
-        if not self.buffer:
-            return None
+    def add_live_chunk(self, chunk):
 
-        return np.concatenate(self.buffer, axis=0)
+        self.pre_roll.append(chunk)
+
+    def start_recording(self):
+
+        self.recording = list(self.pre_roll)
+
+    def add_recording_chunk(self, chunk):
+
+        self.recording.append(chunk)
+
+    def save(self, filename):
+
+        if not self.recording:
+            return False
+
+        audio = np.concatenate(self.recording, axis=0)
+
+        sf.write(filename, audio, SAMPLE_RATE)
+
+        self.recording.clear()
+
+        return True

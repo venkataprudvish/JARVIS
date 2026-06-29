@@ -20,6 +20,8 @@ class VADEngine:
         print("VAD Engine Ready")
 
     def is_speaking(self, audio):
+        if len(audio) < self.sample_rate // 4:
+            return False
 
         return self.detector.has_speech(audio)
 

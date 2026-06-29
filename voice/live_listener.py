@@ -1,9 +1,10 @@
-import sounddevice as sd
 import queue
+import sounddevice as sd
 
-SAMPLE_RATE = 16000
-CHANNELS = 1
-BLOCK_SIZE = 1024
+from voice.config import (
+    SAMPLE_RATE,
+    BLOCK_SIZE,
+)
 
 
 class LiveListener:
@@ -27,9 +28,9 @@ class LiveListener:
 
         with sd.InputStream(
             samplerate=SAMPLE_RATE,
-            channels=CHANNELS,
-            blocksize=BLOCK_SIZE,
+            channels=1,
             dtype="float32",
+            blocksize=BLOCK_SIZE,
             callback=self.callback
         ):
 

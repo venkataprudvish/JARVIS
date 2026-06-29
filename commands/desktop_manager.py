@@ -1,6 +1,7 @@
 import os
 import time
 import psutil
+import subprocess
 import pyautogui
 import win32gui
 import win32con
@@ -99,24 +100,21 @@ def close_process(pid):
 
         process = psutil.Process(pid)
 
-        process.terminate()
+        exe_name = process.name()
 
-        process.wait(timeout=5)
+        result = subprocess.run(
+            ["taskkill", "/F", "/IM", exe_name],
+            capture_output=True,
+            text=True
+        )
 
-        return True
-
-    except psutil.TimeoutExpired:
-
-        process.kill()
-
-        return True
+        return result.returncode == 0
 
     except (
         psutil.NoSuchProcess,
         psutil.AccessDenied,
         psutil.ZombieProcess
     ):
-
         return False
 
 
